@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -159,9 +159,9 @@
             <div class="note">
                 <strong>Example Usage:</strong>
                 <pre><code># In DeluxeChat, EssentialsX, or any PAPI-compatible plugin
-format: "&7[#%rexwelcome_playernumber%] &f{USERNAME}: {MESSAGE}"
-message: "&aYou are player #%rexwelcome_playernumber%!"
-message: "&7First player: %rexwelcome_player_1%"</code></pre>
+format: "&amp;7[#%rexwelcome_playernumber%] &amp;f{USERNAME}: {MESSAGE}"
+message: "&amp;aYou are player #%rexwelcome_playernumber%!"
+message: "&amp;7First player: %rexwelcome_player_1%"</code></pre>
             </div>
 
             <h3>Internal Placeholders</h3>
@@ -209,10 +209,10 @@ message: "&7First player: %rexwelcome_player_1%"</code></pre>
             <p>RexWelcome supports multiple color formats:</p>
 
             <h3>Legacy Color Codes</h3>
-            <pre><code>message: "&aGreen &bAqua &cRed &eYellow"</code></pre>
+            <pre><code>message: "&amp;aGreen &amp;bAqua &amp;cRed &amp;eYellow"</code></pre>
 
             <h3>Hex Colors</h3>
-            <pre><code>message: "&#ff5733Orange text"
+            <pre><code>message: "&amp;#ff5733Orange text"
 message: "#ff5733This also works"</code></pre>
 
             <h3>MiniMessage Format</h3>
@@ -226,22 +226,22 @@ message: "&lt;bold&gt;&lt;#FFD700&gt;Bold gold text&lt;/bold&gt;"</code></pre>
             <h3>Returning Players</h3>
             <pre><code>returning-player:
   titles:
-    - title: "&#FFD700WELCOME BACK!"
-      subtitle: "&fWe missed you, &e%player%&f!"
-    - title: "&#FF6B6BYOU'RE BACK!"
-      subtitle: "&7Good to see you again!"
-    - title: "&#00FF7FBACK AGAIN?"
-      subtitle: "&fOf course you are!"</code></pre>
+    - title: "&amp;#FFD700WELCOME BACK!"
+      subtitle: "&amp;fWe missed you, &amp;e%player%&amp;f!"
+    - title: "&amp;#FF6B6BYOU'RE BACK!"
+      subtitle: "&amp;7Good to see you again!"
+    - title: "&amp;#00FF7FBACK AGAIN?"
+      subtitle: "&amp;fOf course you are!"</code></pre>
 
             <h3>First-Time Players</h3>
             <pre><code>first-join:
   titles:
-    - title: "&#00BFFF✨ WELCOME!"
-      subtitle: "&fThis is your first time here!"
-    - title: "&#FFD700🌟 FIRST TIME!"
-      subtitle: "&eYou're player #%total_players%!"
-    - title: "&#FF69B4WELCOME NEWBIE!"
-      subtitle: "&fEnjoy your stay!"</code></pre>
+    - title: "&amp;#00BFFF✨ WELCOME!"
+      subtitle: "&amp;fThis is your first time here!"
+    - title: "&amp;#FFD700🌟 FIRST TIME!"
+      subtitle: "&amp;eYou're player #%total_players%!"
+    - title: "&amp;#FF69B4WELCOME NEWBIE!"
+      subtitle: "&amp;fEnjoy your stay!"</code></pre>
 
             <h2 id="first-join">First-Join Features</h2>
 
@@ -257,18 +257,18 @@ message: "&lt;bold&gt;&lt;#FFD700&gt;Bold gold text&lt;/bold&gt;"</code></pre>
             <h3>First-Join Messages</h3>
             <pre><code>first-join:
   messages:
-    - "&7"
-    - "%prefix%&#00BFFF✨ Welcome &f%player%&b!"
-    - "&7• &fYou are player #&#f75634%total_players%"
-    - "&7• &fVisit: &#f75634https://rexsystems.cc"
-    - "&7• &fRead the rules: &#f75634/rules"
-    - "&7"</code></pre>
+    - "&amp;7"
+    - "%prefix%&amp;#00BFFF✨ Welcome &amp;f%player%&amp;b!"
+    - "&amp;7• &amp;fYou are player #&amp;#f75634%total_players%"
+    - "&amp;7• &amp;fVisit: &amp;#f75634https://rexsystems.cc"
+    - "&amp;7• &amp;fRead the rules: &amp;#f75634/rules"
+    - "&amp;7"</code></pre>
 
             <h2 id="broadcast">Broadcast System</h2>
             <p>Announce when someone joins for the first time:</p>
             <pre><code>broadcast:
   enabled: true
-  message: "%prefix%&#f75634%player% &fhas joined for the first time! &7(Player #&e%joincount%&7)"</code></pre>
+  message: "%prefix%&amp;#f75634%player% &amp;fhas joined for the first time! &amp;7(Player #&amp;e%joincount%&amp;7)"</code></pre>
 
             <h2 id="sounds">Join Sounds</h2>
             <p>Play a sound when players join:</p>
@@ -313,20 +313,20 @@ message: "&lt;bold&gt;&lt;#FFD700&gt;Bold gold text&lt;/bold&gt;"</code></pre>
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # COLOR FORMAT SUPPORT:
-# - Legacy: &a, &b, &c, &l, &o, etc.
-# - Hex #1: &#a96eee (ampersand + hex)
+# - Legacy: &amp;a, &amp;b, &amp;c, &amp;l, &amp;o, etc.
+# - Hex #1: &amp;#a96eee (ampersand + hex)
 # - Hex #2: #a96eee (plain hex)
 # - MiniMessage: &lt;color:#a96eee&gt;, &lt;gradient:#ff0000:#00ff00&gt;, &lt;bold&gt;, &lt;italic&gt;
 # ═══════════════════════════════════════════════════════════════════════════════
 
 # General Messages
 messages:
-  prefix: "&7[&#f75634RexWelcome&7] "
-  no-permission: "%prefix%&cYou don't have permission to use this command."
-  reload-success: "%prefix%&aConfiguration reloaded successfully!"
-  command-not-found: "%prefix%&cCommand not found. Use /rexwelcome help"
-  reload-usage: "%prefix%&fUsage: /%cmd% reload"
-  player-only: "%prefix%&cThis command can only be used by players!"
+  prefix: "&amp;7[&amp;#f75634RexWelcome&amp;7] "
+  no-permission: "%prefix%&amp;cYou don't have permission to use this command."
+  reload-success: "%prefix%&amp;aConfiguration reloaded successfully!"
+  command-not-found: "%prefix%&amp;cCommand not found. Use /rexwelcome help"
+  reload-usage: "%prefix%&amp;fUsage: /%cmd% reload"
+  player-only: "%prefix%&amp;cThis command can only be used by players!"
 
 # ═══════════════════════════════════════════════════════════════════════════════
 #                         RETURNING PLAYER SETTINGS
@@ -335,25 +335,25 @@ messages:
 returning-player:
   # Multiple titles - one will be randomly selected each time!
   titles:
-    - title: "&#FFD700WELCOME BACK!"
-      subtitle: "&fWe missed you, &e%player%&f!"
-    - title: "&#FF6B6BYOU'RE BACK!"
-      subtitle: "&7Good to see you again, %player%!"
-    - title: "&#00FF7FBACK AGAIN?"
-      subtitle: "&fOf course you are, &a%player%&f!"
-    - title: "&#9370DBLOOK WHO'S HERE!"
-      subtitle: "&d%player% &fhas returned!"
-    - title: "&#FF4500HEY THERE!"
-      subtitle: "&fWelcome back, &6%player%&f!"
+    - title: "&amp;#FFD700WELCOME BACK!"
+      subtitle: "&amp;fWe missed you, &amp;e%player%&amp;f!"
+    - title: "&amp;#FF6B6BYOU'RE BACK!"
+      subtitle: "&amp;7Good to see you again, %player%!"
+    - title: "&amp;#00FF7FBACK AGAIN?"
+      subtitle: "&amp;fOf course you are, &amp;a%player%&amp;f!"
+    - title: "&amp;#9370DBLOOK WHO'S HERE!"
+      subtitle: "&amp;d%player% &amp;fhas returned!"
+    - title: "&amp;#FF4500HEY THERE!"
+      subtitle: "&amp;fWelcome back, &amp;6%player%&amp;f!"
   
   # Messages sent to returning players
   messages:
-    - "&7"
-    - "%prefix%&#f75634Welcome back, &f%player%&f!"
-    - "&7• &fOnline Players: &#f75634%online%/%max_players%"
-    - "&7• &fVisit our store: &#f75634store.rexsystems.cc"
-    - "&7• &fJoin our Discord: &#f75634discord.rexsystems.cc"
-    - "&7"
+    - "&amp;7"
+    - "%prefix%&amp;#f75634Welcome back, &amp;f%player%&amp;f!"
+    - "&amp;7• &amp;fOnline Players: &amp;#f75634%online%/%max_players%"
+    - "&amp;7• &amp;fVisit our store: &amp;#f75634store.rexsystems.cc"
+    - "&amp;7• &amp;fJoin our Discord: &amp;#f75634discord.rexsystems.cc"
+    - "&amp;7"
 
 # ═══════════════════════════════════════════════════════════════════════════════
 #                         FIRST-TIME PLAYER SETTINGS
@@ -364,16 +364,16 @@ first-join:
   
   # Multiple titles for first-time players - randomly selected!
   titles:
-    - title: "&#00BFFF✨ WELCOME!"
-      subtitle: "&fThis is your first time here!"
-    - title: "&#FF69B4WELCOME NEWBIE!"
-      subtitle: "&fEnjoy your stay, &d%player%&f!"
-    - title: "&#7CFC00HELLO, &f%player%&a!"
-      subtitle: "&fWelcome to our server!"
-    - title: "&#FFD700🌟 FIRST TIME!"
-      subtitle: "&eYou're player #%total_players%!"
-    - title: "&#FF6347GREETINGS!"
-      subtitle: "&fWe hope you enjoy your stay!"
+    - title: "&amp;#00BFFF✨ WELCOME!"
+      subtitle: "&amp;fThis is your first time here!"
+    - title: "&amp;#FF69B4WELCOME NEWBIE!"
+      subtitle: "&amp;fEnjoy your stay, &amp;d%player%&amp;f!"
+    - title: "&amp;#7CFC00HELLO, &amp;f%player%&amp;a!"
+      subtitle: "&amp;fWelcome to our server!"
+    - title: "&amp;#FFD700🌟 FIRST TIME!"
+      subtitle: "&amp;eYou're player #%total_players%!"
+    - title: "&amp;#FF6347GREETINGS!"
+      subtitle: "&amp;fWe hope you enjoy your stay!"
   
   # Commands to execute when a player joins for the first time
   # Placeholders: %player%, %joincount%, %online%, etc.
@@ -383,13 +383,13 @@ first-join:
   
   # Messages sent to first-time players
   messages:
-    - "&7"
-    - "%prefix%&#00BFFF✨ Welcome &f%player% &7for the first time!"
-    - "&7• &fYou are player number &#f75634#%total_players%"
-    - "&7• &fVisit our website: &#f75634https://rexsystems.cc"
-    - "&7• &fJoin our Discord: &#f75634discord.rexsystems.cc"
-    - "&7• &fRead the rules: &#f75634/rules"
-    - "&7"
+    - "&amp;7"
+    - "%prefix%&amp;#00BFFF✨ Welcome &amp;f%player% &amp;7for the first time!"
+    - "&amp;7• &amp;fYou are player number &amp;#f75634#%total_players%"
+    - "&amp;7• &amp;fVisit our website: &amp;#f75634https://rexsystems.cc"
+    - "&amp;7• &amp;fJoin our Discord: &amp;#f75634discord.rexsystems.cc"
+    - "&amp;7• &amp;fRead the rules: &amp;#f75634/rules"
+    - "&amp;7"
 
 # ═══════════════════════════════════════════════════════════════════════════════
 #                            BROADCAST SETTINGS
@@ -398,7 +398,7 @@ first-join:
 # Broadcast when someone joins for the first time
 broadcast:
   enabled: true
-  message: "%prefix%&#f75634%player% &fhas joined for the first time! &7(Player #&e%joincount%&7)"
+  message: "%prefix%&amp;#f75634%player% &amp;fhas joined for the first time! &amp;7(Player #&amp;e%joincount%&amp;7)"
 
 # ═══════════════════════════════════════════════════════════════════════════════
 #                            WELCOME SETTINGS
@@ -439,7 +439,7 @@ commands:
     command: "rexwelcome"
     aliases: ["rw"]
     permission: "rexwelcome.reload"
-    usage: "%prefix%&fUsage: /rexwelcome reload"</code></pre>
+    usage: "%prefix%&amp;fUsage: /rexwelcome reload"</code></pre>
 
         </main>
     </div>
