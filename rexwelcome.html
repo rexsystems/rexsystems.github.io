@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RexWelcome Documentation - RexSystems</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="/" class="nav-brand"><span>Rex</span>Systems</a>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/rexwelcome">Docs</a>
+                <a href="https://github.com/rexsystems" target="_blank">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container docs-container">
+        <aside class="docs-sidebar">
+            <h3>RexWelcome Docs</h3>
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#installation">Installation</a></li>
+                <li><a href="#commands">Commands</a></li>
+                <li><a href="#permissions">Permissions</a></li>
+                <li><a href="#placeholders">Placeholders</a></li>
+                <li><a href="#color-formats">Color Formats</a></li>
+                <li><a href="#randomized-titles">Randomized Titles</a></li>
+                <li><a href="#first-join">First-Join Features</a></li>
+                <li><a href="#broadcast">Broadcast System</a></li>
+                <li><a href="#sounds">Join Sounds</a></li>
+                <li><a href="#player-data">Player Data</a></li>
+                <li><a href="#configuration">Configuration</a></li>
+            </ul>
+        </aside>
+
+        <main class="docs-content">
+            <h1 id="overview">RexWelcome Documentation</h1>
+            <p>RexWelcome is a powerful welcome message plugin for Minecraft servers with randomized titles, first-join tracking, and PlaceholderAPI integration.</p>
+
+            <div class="note">
+                <strong>Requirements:</strong> Java 21 (Required), Minecraft 1.20.4+ (Supported), Paper or Spigot server
+            </div>
+
+            <h3>Features</h3>
+            <ul>
+                <li><strong>Randomized Welcome Titles</strong> - Multiple title variations for variety</li>
+                <li><strong>First-Join Detection</strong> - Different messages for new vs returning players</li>
+                <li><strong>Join Number Tracking</strong> - Track who was 1st, 2nd, 3rd player to join</li>
+                <li><strong>First-Join Commands</strong> - Execute commands when players join for the first time</li>
+                <li><strong>Broadcast System</strong> - Announce first-time joins to all players</li>
+                <li><strong>PlaceholderAPI Integration</strong> - Custom placeholders for other plugins</li>
+                <li><strong>Advanced Color Support</strong> - Legacy codes, hex colors, MiniMessage</li>
+                <li><strong>Join Sounds</strong> - Customizable sounds when players join</li>
+                <li><strong>Chat Clearing</strong> - Optional chat clear before welcome messages</li>
+                <li><strong>Hot Reload</strong> - Reload configuration without restarting</li>
+            </ul>
+
+            <h2 id="installation">Installation</h2>
+            <ol>
+                <li>Download the latest <code>RexWelcome.jar</code> from <a href="https://github.com/rexsystems/RexWelcome/releases" target="_blank">GitHub Releases</a></li>
+                <li>Place the jar file in your server's <code>plugins</code> folder</li>
+                <li>(Optional) Install <a href="https://www.spigotmc.org/resources/placeholderapi.6245/" target="_blank">PlaceholderAPI</a></li>
+                <li>Restart your server</li>
+                <li>Configure the plugin in <code>plugins/RexWelcome/config.yml</code></li>
+                <li>Use <code>/rw reload</code> to apply changes without restarting</li>
+            </ol>
+
+            <h2 id="commands">Commands</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Command</th>
+                        <th>Aliases</th>
+                        <th>Description</th>
+                        <th>Permission</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>/rexwelcome</code></td>
+                        <td><code>/rw</code></td>
+                        <td>Main plugin command</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td><code>/rw reload</code></td>
+                        <td>-</td>
+                        <td>Reload configuration</td>
+                        <td><code>rexwelcome.reload</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>/rw info</code></td>
+                        <td>-</td>
+                        <td>Show plugin information</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td><code>/rw help</code></td>
+                        <td>-</td>
+                        <td>Show help message</td>
+                        <td>-</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2 id="permissions">Permissions</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Permission</th>
+                        <th>Description</th>
+                        <th>Default</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>rexwelcome.reload</code></td>
+                        <td>Reload plugin configuration</td>
+                        <td>op</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2 id="placeholders">Placeholders</h2>
+
+            <h3>PlaceholderAPI Placeholders</h3>
+            <p>Use these in <strong>any plugin</strong> that supports PlaceholderAPI:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Placeholder</th>
+                        <th>Description</th>
+                        <th>Example Output</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>%rexwelcome_playernumber%</code></td>
+                        <td>Player's join number</td>
+                        <td><code>42</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>%rexwelcome_totalplayers%</code></td>
+                        <td>Total unique players</td>
+                        <td><code>150</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>%rexwelcome_player_&lt;N&gt;%</code></td>
+                        <td>Name of Nth player</td>
+                        <td><code>Steve</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="note">
+                <strong>Example Usage:</strong>
+                <pre><code># In DeluxeChat, EssentialsX, or any PAPI-compatible plugin
+format: "&7[#%rexwelcome_playernumber%] &f{USERNAME}: {MESSAGE}"
+message: "&aYou are player #%rexwelcome_playernumber%!"
+message: "&7First player: %rexwelcome_player_1%"</code></pre>
+            </div>
+
+            <h3>Internal Placeholders</h3>
+            <p>Use these <strong>inside RexWelcome's config.yml</strong>:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Placeholder</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>%player%</code></td>
+                        <td>Player's name</td>
+                    </tr>
+                    <tr>
+                        <td><code>%displayname%</code></td>
+                        <td>Player's display name</td>
+                    </tr>
+                    <tr>
+                        <td><code>%prefix%</code></td>
+                        <td>Plugin prefix (from config)</td>
+                    </tr>
+                    <tr>
+                        <td><code>%online%</code></td>
+                        <td>Online player count</td>
+                    </tr>
+                    <tr>
+                        <td><code>%max_players%</code></td>
+                        <td>Maximum players</td>
+                    </tr>
+                    <tr>
+                        <td><code>%total_players%</code></td>
+                        <td>Total unique players</td>
+                    </tr>
+                    <tr>
+                        <td><code>%joincount%</code></td>
+                        <td>Alias for %total_players%</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2 id="color-formats">Color Formats</h2>
+            <p>RexWelcome supports multiple color formats:</p>
+
+            <h3>Legacy Color Codes</h3>
+            <pre><code>message: "&aGreen &bAqua &cRed &eYellow"</code></pre>
+
+            <h3>Hex Colors</h3>
+            <pre><code>message: "&#ff5733Orange text"
+message: "#ff5733This also works"</code></pre>
+
+            <h3>MiniMessage Format</h3>
+            <pre><code>message: "&lt;color:#ff5733&gt;Orange&lt;/color&gt;"
+message: "&lt;gradient:#ff0000:#00ff00&gt;Gradient text&lt;/gradient&gt;"
+message: "&lt;bold&gt;&lt;#FFD700&gt;Bold gold text&lt;/bold&gt;"</code></pre>
+
+            <h2 id="randomized-titles">Randomized Titles</h2>
+            <p>RexWelcome can display random titles from a list each time a player joins:</p>
+
+            <h3>Returning Players</h3>
+            <pre><code>returning-player:
+  titles:
+    - title: "&#FFD700WELCOME BACK!"
+      subtitle: "&fWe missed you, &e%player%&f!"
+    - title: "&#FF6B6BYOU'RE BACK!"
+      subtitle: "&7Good to see you again!"
+    - title: "&#00FF7FBACK AGAIN?"
+      subtitle: "&fOf course you are!"</code></pre>
+
+            <h3>First-Time Players</h3>
+            <pre><code>first-join:
+  titles:
+    - title: "&#00BFFF✨ WELCOME!"
+      subtitle: "&fThis is your first time here!"
+    - title: "&#FFD700🌟 FIRST TIME!"
+      subtitle: "&eYou're player #%total_players%!"
+    - title: "&#FF69B4WELCOME NEWBIE!"
+      subtitle: "&fEnjoy your stay!"</code></pre>
+
+            <h2 id="first-join">First-Join Features</h2>
+
+            <h3>First-Join Commands</h3>
+            <p>Execute commands automatically when a player joins for the first time:</p>
+            <pre><code>first-join:
+  enabled: true
+  commands:
+    - "give %player% diamond 5"
+    - "eco give %player% 1000"
+    - "advancement grant %player% only story/mine_diamond"</code></pre>
+
+            <h3>First-Join Messages</h3>
+            <pre><code>first-join:
+  messages:
+    - "&7"
+    - "%prefix%&#00BFFF✨ Welcome &f%player%&b!"
+    - "&7• &fYou are player #&#f75634%total_players%"
+    - "&7• &fVisit: &#f75634https://rexsystems.cc"
+    - "&7• &fRead the rules: &#f75634/rules"
+    - "&7"</code></pre>
+
+            <h2 id="broadcast">Broadcast System</h2>
+            <p>Announce when someone joins for the first time:</p>
+            <pre><code>broadcast:
+  enabled: true
+  message: "%prefix%&#f75634%player% &fhas joined for the first time! &7(Player #&e%joincount%&7)"</code></pre>
+
+            <h2 id="sounds">Join Sounds</h2>
+            <p>Play a sound when players join:</p>
+            <pre><code>sounds:
+  join:
+    enabled: true
+    sound: "ENTITY_PLAYER_LEVELUP"
+    volume: 1.0
+    pitch: 1.0</code></pre>
+
+            <div class="note">
+                <strong>Sound Names:</strong> See <a href="https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html" target="_blank">Bukkit Sound Documentation</a> for all available sounds.
+            </div>
+
+            <h2 id="player-data">Player Data Storage</h2>
+            <p>Player data is stored in <code>plugins/RexWelcome/playerdata.yml</code>:</p>
+            <pre><code>players:
+  550e8400-e29b-41d4-a716-446655440000:
+    join-number: 1
+    name: "Steve"
+    first-join: 1673472000000
+  550e8400-e29b-41d4-a716-446655440001:
+    join-number: 2
+    name: "Alex"
+    first-join: 1673472100000</code></pre>
+
+            <p>This tracks:</p>
+            <ul>
+                <li><strong>join-number</strong> - Order in which players joined (1st, 2nd, 3rd, etc.)</li>
+                <li><strong>name</strong> - Player's username</li>
+                <li><strong>first-join</strong> - Timestamp of first join</li>
+            </ul>
+
+            <h2 id="configuration">Full Configuration</h2>
+            <p>Here's the complete <code>config.yml</code> with all available options:</p>
+
+            <pre><code># ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║                               RexWelcome                                      ║
+# ║                     Advanced Welcome Message Plugin                           ║
+# ║                          by RexSystems.cc                                     ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# COLOR FORMAT SUPPORT:
+# - Legacy: &a, &b, &c, &l, &o, etc.
+# - Hex #1: &#a96eee (ampersand + hex)
+# - Hex #2: #a96eee (plain hex)
+# - MiniMessage: &lt;color:#a96eee&gt;, &lt;gradient:#ff0000:#00ff00&gt;, &lt;bold&gt;, &lt;italic&gt;
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# General Messages
+messages:
+  prefix: "&7[&#f75634RexWelcome&7] "
+  no-permission: "%prefix%&cYou don't have permission to use this command."
+  reload-success: "%prefix%&aConfiguration reloaded successfully!"
+  command-not-found: "%prefix%&cCommand not found. Use /rexwelcome help"
+  reload-usage: "%prefix%&fUsage: /%cmd% reload"
+  player-only: "%prefix%&cThis command can only be used by players!"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#                         RETURNING PLAYER SETTINGS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+returning-player:
+  # Multiple titles - one will be randomly selected each time!
+  titles:
+    - title: "&#FFD700WELCOME BACK!"
+      subtitle: "&fWe missed you, &e%player%&f!"
+    - title: "&#FF6B6BYOU'RE BACK!"
+      subtitle: "&7Good to see you again, %player%!"
+    - title: "&#00FF7FBACK AGAIN?"
+      subtitle: "&fOf course you are, &a%player%&f!"
+    - title: "&#9370DBLOOK WHO'S HERE!"
+      subtitle: "&d%player% &fhas returned!"
+    - title: "&#FF4500HEY THERE!"
+      subtitle: "&fWelcome back, &6%player%&f!"
+  
+  # Messages sent to returning players
+  messages:
+    - "&7"
+    - "%prefix%&#f75634Welcome back, &f%player%&f!"
+    - "&7• &fOnline Players: &#f75634%online%/%max_players%"
+    - "&7• &fVisit our store: &#f75634store.rexsystems.cc"
+    - "&7• &fJoin our Discord: &#f75634discord.rexsystems.cc"
+    - "&7"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#                         FIRST-TIME PLAYER SETTINGS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+first-join:
+  enabled: true
+  
+  # Multiple titles for first-time players - randomly selected!
+  titles:
+    - title: "&#00BFFF✨ WELCOME!"
+      subtitle: "&fThis is your first time here!"
+    - title: "&#FF69B4WELCOME NEWBIE!"
+      subtitle: "&fEnjoy your stay, &d%player%&f!"
+    - title: "&#7CFC00HELLO, &f%player%&a!"
+      subtitle: "&fWelcome to our server!"
+    - title: "&#FFD700🌟 FIRST TIME!"
+      subtitle: "&eYou're player #%total_players%!"
+    - title: "&#FF6347GREETINGS!"
+      subtitle: "&fWe hope you enjoy your stay!"
+  
+  # Commands to execute when a player joins for the first time
+  # Placeholders: %player%, %joincount%, %online%, etc.
+  # These run as console commands!
+  commands:
+    - "give %player% diamond 1"
+  
+  # Messages sent to first-time players
+  messages:
+    - "&7"
+    - "%prefix%&#00BFFF✨ Welcome &f%player% &7for the first time!"
+    - "&7• &fYou are player number &#f75634#%total_players%"
+    - "&7• &fVisit our website: &#f75634https://rexsystems.cc"
+    - "&7• &fJoin our Discord: &#f75634discord.rexsystems.cc"
+    - "&7• &fRead the rules: &#f75634/rules"
+    - "&7"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#                            BROADCAST SETTINGS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# Broadcast when someone joins for the first time
+broadcast:
+  enabled: true
+  message: "%prefix%&#f75634%player% &fhas joined for the first time! &7(Player #&e%joincount%&7)"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#                            WELCOME SETTINGS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+welcome-messages:
+  enabled: true
+  
+  # Clear chat before sending welcome messages? (Sends 100 empty lines)
+  clear-chat: true
+
+  # Title settings (applies to both first-join and returning)
+  title:
+    enabled: true
+    fade-in: 10    # Ticks (20 ticks = 1 second)
+    stay: 70       # Ticks
+    fade-out: 20   # Ticks
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#                             SOUND SETTINGS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+sounds:
+  join:
+    enabled: true
+    # Sound names: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
+    sound: "ENTITY_PLAYER_LEVELUP"
+    volume: 1.0
+    pitch: 1.0
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#                           COMMAND SETTINGS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+commands:
+  rexwelcome:
+    enabled: true
+    command: "rexwelcome"
+    aliases: ["rw"]
+    permission: "rexwelcome.reload"
+    usage: "%prefix%&fUsage: /rexwelcome reload"</code></pre>
+
+        </main>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 RexSystems. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="docs.js"></script>
+</body>
+</html>
