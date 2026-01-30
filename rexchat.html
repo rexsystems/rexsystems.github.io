@@ -33,6 +33,7 @@
                 <li><a href="#emojis">Emojis</a></li>
                 <li><a href="#custom-commands">Custom Commands</a></li>
                 <li><a href="#placeholders">Placeholders</a></li>
+                <li><a href="#developer-api">Developer API</a></li>
                 <li><a href="#configuration">Configuration</a></li>
             </ul>
         </aside>
@@ -404,6 +405,130 @@
             <h3>PlaceholderAPI Support</h3>
             <p>If PlaceholderAPI is installed, you can use any PAPI placeholder in your chat format:</p>
             <pre><code>format: "{prefix}&7{player} %vault_rank%: &f{message}"</code></pre>
+
+            <h2 id="developer-api">Developer API</h2>
+            <p>RexChat provides a developer API for other plugins to interact with its features.</p>
+
+            <h3>Adding RexChat as a Dependency</h3>
+            <p>Add RexChat to your plugin's <code>plugin.yml</code>:</p>
+            <pre><code>depend: [RexChat]
+# or
+softdepend: [RexChat]</code></pre>
+
+            <h3>Getting the API Instance</h3>
+            <pre><code>import cc.rexsystems.rexChat.api.RexChatAPI;
+
+public class YourPlugin extends JavaPlugin {
+    
+    private RexChatAPI rexChatAPI;
+    
+    @Override
+    public void onEnable() {
+        // Get API instance
+        rexChatAPI = RexChatAPI.getInstance(this);
+        
+        if (rexChatAPI == null) {
+            getLogger().warning("RexChat not found!");
+            return;
+        }
+        
+        getLogger().info("RexChat API loaded!");
+    }
+}</code></pre>
+
+            <h3>API Methods</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>isChatMuted()</code></td>
+                        <td>Check if chat is currently muted</td>
+                    </tr>
+                    <tr>
+                        <td><code>setChatMuted(boolean, String)</code></td>
+                        <td>Mute or unmute chat</td>
+                    </tr>
+                    <tr>
+                        <td><code>clearChat(String)</code></td>
+                        <td>Clear chat for all players</td>
+                    </tr>
+                    <tr>
+                        <td><code>getPlayerChatColor(Player)</code></td>
+                        <td>Get player's selected chat color</td>
+                    </tr>
+                    <tr>
+                        <td><code>setPlayerChatColor(Player, String)</code></td>
+                        <td>Set player's chat color</td>
+                    </tr>
+                    <tr>
+                        <td><code>sendFormattedMessage(Player, String)</code></td>
+                        <td>Send formatted message with colors</td>
+                    </tr>
+                    <tr>
+                        <td><code>formatMessage(String)</code></td>
+                        <td>Format a message to Adventure Component</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Usage Examples</h3>
+            <pre><code>// Check if chat is muted
+if (rexChatAPI.isChatMuted()) {
+    player.sendMessage("Chat is currently muted!");
+}
+
+// Mute chat
+rexChatAPI.setChatMuted(true, "Console");
+
+// Clear chat
+rexChatAPI.clearChat("Admin");
+
+// Get player's chat color
+String color = rexChatAPI.getPlayerChatColor(player);
+
+// Set player's chat color
+boolean success = rexChatAPI.setPlayerChatColor(player, "rainbow");
+
+// Send formatted message
+rexChatAPI.sendFormattedMessage(player, "&6Hello &b{player}!");
+
+// Format message to component
+Component component = rexChatAPI.formatMessage("&aGreen text");</code></pre>
+
+            <h3>Events</h3>
+            <p>RexChat fires custom events that you can listen to:</p>
+
+            <h4>ChatMuteEvent</h4>
+            <pre><code>import cc.rexsystems.rexChat.api.events.ChatMuteEvent;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+
+public class YourListener implements Listener {
+    
+    @EventHandler
+    public void onChatMute(ChatMuteEvent event) {
+        if (event.isMuted()) {
+            // Chat was muted
+            String executor = event.getExecutor();
+        } else {
+            // Chat was unmuted
+        }
+    }
+}</code></pre>
+
+            <h4>ChatClearEvent</h4>
+            <pre><code>import cc.rexsystems.rexChat.api.events.ChatClearEvent;
+
+@EventHandler
+public void onChatClear(ChatClearEvent event) {
+    String executor = event.getExecutor();
+    // Chat was cleared by executor
+}</code></pre>
 
             <h2 id="configuration">Full Configuration Example</h2>
             <p>Here's the complete default configuration file with all available options:</p>

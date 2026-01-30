@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RexChat API Documentation - RexSystems</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="nav-brand"><span>Rex</span>Systems</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="rexchat.html">Docs</a>
+                <a href="api.html">API</a>
+                <a href="https://github.com/rexsystems" target="_blank">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container docs-container">
+        <aside class="docs-sidebar">
+            <h3>API Documentation</h3>
+            <ul>
+                <li><a href="#getting-started">Getting Started</a></li>
+                <li><a href="#setup">Setup</a></li>
+                <li><a href="#api-instance">API Instance</a></li>
+                <li><a href="#chat-management">Chat Management</a></li>
+                <li><a href="#chat-colors">Chat Colors</a></li>
+                <li><a href="#formatting">Message Formatting</a></li>
+                <li><a href="#events">Events</a></li>
+                <li><a href="#examples">Complete Examples</a></li>
+            </ul>
+        </aside>
+
+        <main class="docs-content">
+            <h1 id="getting-started">RexChat API Documentation</h1>
+            <p>The RexChat API allows other plugins to interact with RexChat's features programmatically. This enables you to create addons, integrations, or extend RexChat's functionality.</p>
+
+            <div class="note">
+                <strong>Version:</strong> API introduced in RexChat 1.6.0
+            </div>
+
+            <h2 id="setup">Setup</h2>
+            
+            <h3>Step 1: Add RexChat as a Dependency</h3>
+            <p>First, add RexChat to your plugin's <code>plugin.yml</code> file:</p>
+            <pre><code>name: YourPlugin
+version: 1.0.0
+main: com.example.yourplugin.YourPlugin
+
+# Use 'depend' if your plugin requires RexChat to work
+depend: [RexChat]
+
+# Or use 'softdepend' if RexChat is optional
+softdepend: [RexChat]</code></pre>
+
+            <h3>Step 2: Add RexChat to Your Build</h3>
+            <p>If you're using Maven, you'll need to add RexChat as a dependency. Since RexChat isn't in a public repository yet, you can install it locally:</p>
+            <pre><code># Install RexChat to your local Maven repository
+mvn install:install-file \
+  -Dfile=RexChat-1.6.0.jar \
+  -DgroupId=cc.rexsystems \
+  -DartifactId=rexchat \
+  -Dversion=1.6.0 \
+  -Dpackaging=jar</code></pre>
+
+            <p>Then add it to your <code>pom.xml</code>:</p>
+            <pre><code>&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;cc.rexsystems&lt;/groupId&gt;
+        &lt;artifactId&gt;rexchat&lt;/artifactId&gt;
+        &lt;version&gt;1.6.0&lt;/version&gt;
+        &lt;scope&gt;provided&lt;/scope&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+
+            <div class="warning">
+                <strong>Important:</strong> Use <code>scope</code> as <code>provided</code> since RexChat will be available on the server at runtime.
+            </div>
+
+            <h2 id="api-instance">Getting the API Instance</h2>
+            
+            <h3>Basic Setup</h3>
+            <pre><code>import cc.rexsystems.rexChat.api.RexChatAPI;
+import org.bukkit.plugin.java.JavaPlugin;
+
+public class YourPlugin extends JavaPlugin {
+    
+    private RexChatAPI rexChatAPI;
+    
+    @Override
+    public void onEnable() {
+        // Get the API instance
+        rexChatAPI = RexChatAPI.getInstance(this);
+        
+        // Check if RexChat is available
+        if (rexChatAPI == null) {
+            getLogger().warning("RexChat is not installed or loaded!");
+            getLogger().warning("Some features will be disabled.");
+            return;
+        }
+        
+        getLogger().info("Successfully hooked into RexChat!");
+    }
+    
+    public RexChatAPI getRexChatAPI() {
+        return rexChatAPI;
+    }
+}</code></pre>
+
+            <h3>Checking if RexChat is Available</h3>
+            <pre><code>// Method 1: Check API instance
+if (rexChatAPI != null) {
+    // RexChat is available
+}
+
+// Method 2: Check plugin directly
+Plugin rexChat = getServer().getPluginManager().getPlugin("RexChat");
+if (rexChat != null && rexChat.isEnabled()) {
+    // RexChat is available
+}</code></pre>
+
+            <h2 id="chat-management">Chat Management</h2>
+
+            <h3>Check if Chat is Muted</h3>
+            <pre><code>boolean isMuted = rexChatAPI.isChatMuted();
+
+if (isMuted) {
+    player.sendMessage("Chat is currently muted!");
+}</code></pre>
+
+            <h3>Mute or Unmute Chat</h3>
+            <pre><code>// Mute chat
+rexChatAPI.setChatMuted(true, "YourPlugin");
+
+// Unmute chat
+rexChatAPI.setChatMuted(false, "YourPlugin");
+
+// The second parameter is the executor name shown in announcements
+// Example: "The chat has been muted by YourPlugin"</code></pre>
+
+            <h3>Toggle Chat Mute</h3>
+            <pre><code>// Toggle mute state
+boolean currentState = rexChatAPI.isChatMuted();
+rexChatAPI.setChatMuted(!currentState, "Admin");</code></pre>
+
+            <h3>Clear Chat</h3>
+            <pre><code>// Clear chat for all players
+rexChatAPI.clearChat("YourPlugin");
+
+// This will:
+// 1. Send blank lines to all players
+// 2. Show a clear announcement
+// 3. Fire a ChatClearEvent</code></pre>
+
+            <h2 id="chat-colors">Chat Colors</h2>
+
+            <h3>Get Player's Chat Color</h3>
+            <pre><code>String colorId = rexChatAPI.getPlayerChatColor(player);
+
+if (colorId == null) {
+    player.sendMessage("You don't have a chat color set.");
+} else {
+    player.sendMessage("Your chat color: " + colorId);
+    // Example output: "Your chat color: rainbow"
+}</code></pre>
+
+            <h3>Set Player's Chat Color</h3>
+            <pre><code>// Set a chat color
+boolean success = rexChatAPI.setPlayerChatColor(player, "rainbow");
+
+if (success) {
+    player.sendMessage("Chat color set to rainbow!");
+} else {
+    player.sendMessage("Failed! Color doesn't exist or you lack permission.");
+}
+
+// Available colors (from default config):
+// red, gold, green, aqua, pink, rainbow, sunset, ocean</code></pre>
+
+            <h3>Remove Player's Chat Color</h3>
+            <pre><code>// Pass null to remove color
+boolean success = rexChatAPI.setPlayerChatColor(player, null);
+
+if (success) {
+    player.sendMessage("Chat color removed!");
+}</code></pre>
+
+            <h3>Check Color Availability</h3>
+            <pre><code>// Colors are defined in RexChat's config.yml
+// Check if a color exists before setting it
+
+String[] colors = {"red", "gold", "green", "aqua", "pink", 
+                   "rainbow", "sunset", "ocean"};
+
+for (String color : colors) {
+    if (rexChatAPI.setPlayerChatColor(player, color)) {
+        // Color exists and player has permission
+        break;
+    }
+}</code></pre>
+
+            <h2 id="formatting">Message Formatting</h2>
+
+            <h3>Send Formatted Message</h3>
+            <pre><code>// Send a message with color codes
+rexChatAPI.sendFormattedMessage(player, "&6Hello &b{player}&f!");
+
+// Supports:
+// - Legacy color codes: &a, &c, &6, etc.
+// - HEX colors: &#FF5733
+// - Gradients: &lt;gradient:#FF0000:#00FF00&gt;text&lt;/gradient&gt;
+// - Rainbow: &lt;rainbow&gt;text&lt;/rainbow&gt;</code></pre>
+
+            <h3>Format Message to Component</h3>
+            <pre><code>import net.kyori.adventure.text.Component;
+
+// Convert a string to an Adventure Component
+Component component = rexChatAPI.formatMessage("&aGreen &bBlue &#FF5733HEX");
+
+// Use the component
+player.sendMessage(component);
+
+// Or use it in other Adventure API methods
+Audience audience = player;
+audience.sendMessage(component);</code></pre>
+
+            <h3>Formatting Examples</h3>
+            <pre><code>// Legacy colors
+rexChatAPI.sendFormattedMessage(player, "&aGreen &cRed &6Gold");
+
+// HEX colors
+rexChatAPI.sendFormattedMessage(player, "&#FF5733Orange &#00FF00Green");
+
+// Gradients
+rexChatAPI.sendFormattedMessage(player, "&lt;gradient:#FF0000:#0000FF&gt;Rainbow Text&lt;/gradient&gt;");
+
+// Rainbow effect
+rexChatAPI.sendFormattedMessage(player, "&lt;rainbow&gt;Colorful!&lt;/rainbow&gt;");
+
+// Combined
+rexChatAPI.sendFormattedMessage(player, 
+    "&6[&cWarning&6] &lt;gradient:#FF0000:#FFFF00&gt;Important message!&lt;/gradient&gt;");</code></pre>
+
+            <h2 id="events">Events</h2>
+
+            <h3>ChatMuteEvent</h3>
+            <p>Fired when chat is muted or unmuted.</p>
+            <pre><code>import cc.rexsystems.rexChat.api.events.ChatMuteEvent;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+
+public class ChatListener implements Listener {
+    
+    @EventHandler
+    public void onChatMute(ChatMuteEvent event) {
+        // Check if chat was muted or unmuted
+        if (event.isMuted()) {
+            // Chat was muted
+            String executor = event.getExecutor();
+            Bukkit.getLogger().info("Chat muted by: " + executor);
+            
+            // Do something when chat is muted
+            // Example: Pause a minigame, log to database, etc.
+        } else {
+            // Chat was unmuted
+            Bukkit.getLogger().info("Chat unmuted!");
+        }
+    }
+}</code></pre>
+
+            <h3>ChatClearEvent</h3>
+            <p>Fired when chat is cleared.</p>
+            <pre><code>import cc.rexsystems.rexChat.api.events.ChatClearEvent;
+
+@EventHandler
+public void onChatClear(ChatClearEvent event) {
+    String executor = event.getExecutor();
+    
+    // Log who cleared the chat
+    Bukkit.getLogger().info("Chat cleared by: " + executor);
+    
+    // Example: Send a notification to admins
+    for (Player admin : Bukkit.getOnlinePlayers()) {
+        if (admin.hasPermission("yourplugin.notify")) {
+            admin.sendMessage("§6Chat was cleared by " + executor);
+        }
+    }
+}</code></pre>
+
+            <h3>Registering Event Listeners</h3>
+            <pre><code>@Override
+public void onEnable() {
+    // Register your listener
+    getServer().getPluginManager().registerEvents(new ChatListener(), this);
+}</code></pre>
+
+            <h2 id="examples">Complete Examples</h2>
+
+            <h3>Example 1: Anti-Spam Addon</h3>
+            <pre><code>public class AntiSpamAddon extends JavaPlugin implements Listener {
+    
+    private RexChatAPI rexChatAPI;
+    private Map&lt;UUID, Integer&gt; spamCount = new HashMap&lt;&gt;();
+    
+    @Override
+    public void onEnable() {
+        rexChatAPI = RexChatAPI.getInstance(this);
+        
+        if (rexChatAPI == null) {
+            getLogger().severe("RexChat not found! Disabling...");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+        
+        getServer().getPluginManager().registerEvents(this, this);
+    }
+    
+    @EventHandler
+    public void onChat(AsyncPlayerChatEvent event) {
+        Player player = event.getPlayer();
+        UUID uuid = player.getUniqueId();
+        
+        // Track spam
+        int count = spamCount.getOrDefault(uuid, 0) + 1;
+        spamCount.put(uuid, count);
+        
+        // Auto-mute if spam detected
+        if (count > 5) {
+            rexChatAPI.setChatMuted(true, "AntiSpam");
+            rexChatAPI.sendFormattedMessage(player, 
+                "&c&lSPAM DETECTED! &7Chat has been muted.");
+            
+            // Reset after 30 seconds
+            Bukkit.getScheduler().runTaskLater(this, () -> {
+                rexChatAPI.setChatMuted(false, "AntiSpam");
+                spamCount.remove(uuid);
+            }, 600L);
+        }
+    }
+}</code></pre>
+
+            <h3>Example 2: Chat Color Rewards</h3>
+            <pre><code>public class ColorRewards extends JavaPlugin {
+    
+    private RexChatAPI rexChatAPI;
+    
+    @Override
+    public void onEnable() {
+        rexChatAPI = RexChatAPI.getInstance(this);
+        getCommand("rewardcolor").setExecutor(this::onRewardCommand);
+    }
+    
+    private boolean onRewardCommand(CommandSender sender, Command cmd, 
+                                     String label, String[] args) {
+        if (!(sender instanceof Player)) {
+            sender.sendMessage("Players only!");
+            return true;
+        }
+        
+        Player player = (Player) sender;
+        
+        // Check player level (example)
+        int level = getPlayerLevel(player);
+        
+        if (level >= 10) {
+            // Unlock rainbow color
+            if (rexChatAPI.setPlayerChatColor(player, "rainbow")) {
+                rexChatAPI.sendFormattedMessage(player, 
+                    "&6&lREWARD! &lt;rainbow&gt;Rainbow color unlocked!&lt;/rainbow&gt;");
+            }
+        } else {
+            player.sendMessage("§cYou need level 10 to unlock rainbow color!");
+        }
+        
+        return true;
+    }
+    
+    private int getPlayerLevel(Player player) {
+        // Your level system here
+        return player.getLevel();
+    }
+}</code></pre>
+
+            <h3>Example 3: Chat Logger</h3>
+            <pre><code>public class ChatLogger extends JavaPlugin implements Listener {
+    
+    private RexChatAPI rexChatAPI;
+    private File logFile;
+    
+    @Override
+    public void onEnable() {
+        rexChatAPI = RexChatAPI.getInstance(this);
+        logFile = new File(getDataFolder(), "chat.log");
+        
+        getServer().getPluginManager().registerEvents(this, this);
+    }
+    
+    @EventHandler
+    public void onChatMute(ChatMuteEvent event) {
+        String message = String.format("[%s] Chat %s by %s",
+            new Date(),
+            event.isMuted() ? "MUTED" : "UNMUTED",
+            event.getExecutor()
+        );
+        
+        logToFile(message);
+    }
+    
+    @EventHandler
+    public void onChatClear(ChatClearEvent event) {
+        String message = String.format("[%s] Chat CLEARED by %s",
+            new Date(),
+            event.getExecutor()
+        );
+        
+        logToFile(message);
+    }
+    
+    private void logToFile(String message) {
+        try (FileWriter fw = new FileWriter(logFile, true)) {
+            fw.write(message + "\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+
+            <h2>API Reference Summary</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Return Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>getInstance(Plugin)</code></td>
+                        <td>RexChatAPI</td>
+                        <td>Get API instance (static method)</td>
+                    </tr>
+                    <tr>
+                        <td><code>isChatMuted()</code></td>
+                        <td>boolean</td>
+                        <td>Check if chat is muted</td>
+                    </tr>
+                    <tr>
+                        <td><code>setChatMuted(boolean, String)</code></td>
+                        <td>void</td>
+                        <td>Mute/unmute chat</td>
+                    </tr>
+                    <tr>
+                        <td><code>clearChat(String)</code></td>
+                        <td>void</td>
+                        <td>Clear chat for all players</td>
+                    </tr>
+                    <tr>
+                        <td><code>getPlayerChatColor(Player)</code></td>
+                        <td>String</td>
+                        <td>Get player's chat color ID</td>
+                    </tr>
+                    <tr>
+                        <td><code>setPlayerChatColor(Player, String)</code></td>
+                        <td>boolean</td>
+                        <td>Set player's chat color</td>
+                    </tr>
+                    <tr>
+                        <td><code>sendFormattedMessage(Player, String)</code></td>
+                        <td>void</td>
+                        <td>Send formatted message</td>
+                    </tr>
+                    <tr>
+                        <td><code>formatMessage(String)</code></td>
+                        <td>Component</td>
+                        <td>Format string to Adventure Component</td>
+                    </tr>
+                    <tr>
+                        <td><code>getPlugin()</code></td>
+                        <td>RexChat</td>
+                        <td>Get RexChat plugin instance</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Support & Links</h2>
+            <ul>
+                <li><a href="rexchat.html">User Documentation</a></li>
+                <li><a href="https://github.com/rexsystems/RexChat" target="_blank">GitHub Repository</a></li>
+                <li><a href="https://github.com/rexsystems/RexChat/issues" target="_blank">Report Issues</a></li>
+            </ul>
+        </main>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 RexSystems. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="docs.js"></script>
+</body>
+</html>
