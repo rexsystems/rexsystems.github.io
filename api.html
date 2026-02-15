@@ -28,6 +28,7 @@
                 <li><a href="#api-instance">API Instance</a></li>
                 <li><a href="#chat-management">Chat Management</a></li>
                 <li><a href="#chat-colors">Chat Colors</a></li>
+                <li><a href="#proximity-chat">Proximity Chat</a></li>
                 <li><a href="#formatting">Message Formatting</a></li>
                 <li><a href="#events">Events</a></li>
                 <li><a href="#examples">Complete Examples</a></li>
@@ -154,6 +155,63 @@ rexChatAPI.clearChat("YourPlugin");
 // 1. Send blank lines to all players
 // 2. Show a clear announcement
 // 3. Fire a ChatClearEvent</code></pre>
+
+            <h3>Proximity Chat</h3>
+            <p>Control proximity/local chat settings. When enabled, messages are only visible to players within a certain radius.</p>
+
+            <h4>Check if Proximity Chat is Enabled</h4>
+            <pre><code>boolean isEnabled = rexChatAPI.isProximityChatEnabled();
+
+if (isEnabled) {
+    player.sendMessage("Proximity chat is active!");
+}</code></pre>
+
+            <h4>Get Proximity Chat Radius</h4>
+            <pre><code>double radius = rexChatAPI.getProximityChatRadius();
+
+player.sendMessage("Chat radius: " + radius + " blocks");
+// Returns 0 if unlimited/global chat</code></pre>
+
+            <h4>Enable/Disable Proximity Chat</h4>
+            <pre><code>// Enable proximity chat
+rexChatAPI.setProximityChatEnabled(true);
+
+// Disable proximity chat (global chat)
+rexChatAPI.setProximityChatEnabled(false);</code></pre>
+
+            <h4>Set Proximity Chat Radius</h4>
+            <pre><code>// Set radius to 50 blocks
+rexChatAPI.setProximityChatRadius(50.0);
+
+// Set to 0 for unlimited (global chat)
+rexChatAPI.setProximityChatRadius(0);
+
+// Negative values are automatically converted to 0</code></pre>
+
+            <h4>Complete Proximity Chat Example</h4>
+            <pre><code>// Toggle proximity chat for an event
+public void enableEventMode() {
+    // Save current settings
+    boolean wasEnabled = rexChatAPI.isProximityChatEnabled();
+    double oldRadius = rexChatAPI.getProximityChatRadius();
+    
+    // Enable proximity chat with 30 block radius
+    rexChatAPI.setProximityChatEnabled(true);
+    rexChatAPI.setProximityChatRadius(30.0);
+    
+    Bukkit.broadcastMessage("§6Event mode activated! Chat is now local (30 blocks).");
+}
+
+public void disableEventMode() {
+    // Restore global chat
+    rexChatAPI.setProximityChatEnabled(false);
+    
+    Bukkit.broadcastMessage("§6Event mode ended! Chat is now global.");
+}</code></pre>
+
+            <div class="note">
+                <strong>Note:</strong> Players with the permission <code>rexchat.proximity.bypass</code> can always see all messages, regardless of proximity settings.
+            </div>
 
             <h2 id="chat-colors">Chat Colors</h2>
 

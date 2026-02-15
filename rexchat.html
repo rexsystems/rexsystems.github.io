@@ -27,6 +27,7 @@
                 <li><a href="#installation">Installation</a></li>
                 <li><a href="#commands">Commands</a></li>
                 <li><a href="#permissions">Permissions</a></li>
+                <li><a href="#proximity-chat">Proximity Chat</a></li>
                 <li><a href="#chat-formatting">Chat Formatting</a></li>
                 <li><a href="#chat-colors">Chat Colors</a></li>
                 <li><a href="#mentions">Mentions</a></li>
@@ -152,6 +153,11 @@
                         <td>OP</td>
                     </tr>
                     <tr>
+                        <td><code>rexchat.proximity.bypass</code></td>
+                        <td>See all messages regardless of proximity chat radius</td>
+                        <td>OP</td>
+                    </tr>
+                    <tr>
                         <td><code>rexchat.chatcolor</code></td>
                         <td>Use colors and formatting in chat</td>
                         <td>OP</td>
@@ -163,6 +169,50 @@
                     </tr>
                 </tbody>
             </table>
+
+            <h2 id="proximity-chat">Proximity Chat</h2>
+            <p>Proximity chat (also known as local chat) limits message visibility to players within a certain radius. This is perfect for roleplay servers or creating more immersive gameplay.</p>
+
+            <h3>Configuration</h3>
+            <pre><code>chat-management:
+  proximity:
+    # Enable proximity chat
+    enabled: false
+    
+    # Radius in blocks (0 = unlimited/global chat)
+    radius: 100
+    
+    # Permission to bypass proximity limit (see all messages)
+    bypass-permission: "rexchat.proximity.bypass"
+    
+    # Message shown when no one is nearby
+    no-recipients-message: "%rc_prefix%&7No one is nearby to hear you."
+    
+    # Show [Local] indicator in chat
+    show-range-indicator: false
+    range-indicator: "&7[Local] "</code></pre>
+
+            <h3>How It Works</h3>
+            <ul>
+                <li>Messages are only visible to players within the configured radius</li>
+                <li>Players must be in the same world to see each other's messages</li>
+                <li>The sender always sees their own message</li>
+                <li>Players with <code>rexchat.proximity.bypass</code> permission see all messages (global chat)</li>
+                <li>Console always sees all messages</li>
+                <li>If no one is in range, the sender receives a notification</li>
+            </ul>
+
+            <h3>Use Cases</h3>
+            <ul>
+                <li><strong>Roleplay Servers:</strong> Create realistic local conversations</li>
+                <li><strong>Survival Servers:</strong> Encourage players to stay together</li>
+                <li><strong>Event Servers:</strong> Limit chat spam during large events</li>
+                <li><strong>Prison Servers:</strong> Separate chat by cell blocks or areas</li>
+            </ul>
+
+            <div class="note">
+                <strong>Tip:</strong> Use the Developer API to dynamically enable/disable proximity chat for specific events or game modes!
+            </div>
 
             <h2 id="chat-formatting">Chat Formatting</h2>
             <p>RexChat allows you to fully customize how chat messages appear. You can configure different formats for different player groups.</p>
