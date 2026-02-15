@@ -524,6 +524,22 @@ public class YourPlugin extends JavaPlugin {
                         <td><code>formatMessage(String)</code></td>
                         <td>Format a message to Adventure Component</td>
                     </tr>
+                    <tr>
+                        <td><code>isProximityChatEnabled()</code></td>
+                        <td>Check if proximity chat is enabled</td>
+                    </tr>
+                    <tr>
+                        <td><code>getProximityChatRadius()</code></td>
+                        <td>Get proximity chat radius in blocks</td>
+                    </tr>
+                    <tr>
+                        <td><code>setProximityChatEnabled(boolean)</code></td>
+                        <td>Enable or disable proximity chat</td>
+                    </tr>
+                    <tr>
+                        <td><code>setProximityChatRadius(double)</code></td>
+                        <td>Set proximity chat radius</td>
+                    </tr>
                 </tbody>
             </table>
 
@@ -547,6 +563,21 @@ boolean success = rexChatAPI.setPlayerChatColor(player, "rainbow");
 
 // Send formatted message
 rexChatAPI.sendFormattedMessage(player, "&6Hello &b{player}!");
+
+// Check proximity chat status
+if (rexChatAPI.isProximityChatEnabled()) {
+    double radius = rexChatAPI.getProximityChatRadius();
+    player.sendMessage("Proximity chat is active! Radius: " + radius + " blocks");
+}
+
+// Enable proximity chat for an event
+rexChatAPI.setProximityChatEnabled(true);
+rexChatAPI.setProximityChatRadius(50.0);
+Bukkit.broadcastMessage("§6Event mode! Chat is now local (50 blocks).");
+
+// Disable proximity chat
+rexChatAPI.setProximityChatEnabled(false);
+Bukkit.broadcastMessage("§6Chat is now global again!");
 
 // Format message to component
 Component component = rexChatAPI.formatMessage("&aGreen text");</code></pre>
